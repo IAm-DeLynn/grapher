@@ -1,22 +1,31 @@
-import java.util.function.*;
+
 import java.util.Map.Entry;
 
-// HashMap<Integer, Function<Float, Float>> lines = new HashMap<>();
+HashMap<Integer, Equation> equations;
 
 float zoom = 5;
 float shiftX = 0;
 float shiftY = 0;
 
-float strokeWidth = 0.02;
+float strokeWidth = 0.0166667;
 
 void setup() {
-  size(200, 200);
+  size(128, 128);
   
   textAlign(LEFT, TOP);
+  
+  equations = new HashMap<>();
+  
+  equations.put(color(255, 0, 0), (x, y) -> 2 * x - y); // y = 2 * x
 }
 
 void draw() {
   background(255);
+  
+  if(mousePressed) {
+    shiftX += (float)mouseX / width - 0.5;
+    shiftY += 0.5 - (float)mouseY / height;
+  }
   
   for(int j = 0; j < height; j++) {
     float y = (0.5 - (float)j / width) * 2 * zoom + shiftY;
@@ -29,11 +38,9 @@ void draw() {
       if(abs(x % 1) < strokeWidth * zoom || abs(y % 1) < strokeWidth * zoom) stroke(191);
       if(abs(x % 10) < strokeWidth * zoom || abs(y % 10) < strokeWidth * zoom) stroke(127);
       
-      /* for (Entry e : lines.entrySet()) {
-        if(((Function<Float, Float>)e.getValue()).apply(x) == y) stroke((int)e.getKey());
-      } */
-      
-      if(abs(x * x + y * y - 1) < strokeWidth * zoom) stroke(255, 0, 0); // Удавнение окружности
+      for(Entry e : equations.entrySet()) {
+        if(abs(((Equation)e.getValue()).apply(x, y)) <= strokeWidth * zoom) stroke((int)e.getKey());
+      }
       
       point(i, j);
     }
@@ -46,10 +53,5 @@ void draw() {
   
   fill(159);
   
-  text("X: " + shiftX + "\nY: " + shiftY, width / 2 + 5, height / 2 + 5);
-}
-
-void mousePressed() {
-  shiftX += (float)mouseX / width - 0.5;
-  shiftY += 0.5 - (float)mouseY / height;
+  text("X: " + nfc(shiftX, 2) + "\nY: " + nfc(shiftY, 2), width / 2 + 5, height / 2 + 5);
 }
