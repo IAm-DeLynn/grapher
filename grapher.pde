@@ -22,7 +22,7 @@ void setup() {
   
   equations = new HashMap<>();
   
-  equations.put(color(255, 0, 0), (x, y) -> x * x + y * y); // y = 2 * x
+  equations.put(color(255, 0, 0), (x, y) -> x * x + y * y - 1); // x * x + y * y = 1
 }
 
 void draw() {
