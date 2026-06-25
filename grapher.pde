@@ -3,14 +3,15 @@ import java.util.Map.Entry;
 
 HashMap<Integer, Equation> equations;
 
-float zoom = 5;
+float zoom = 0.2;
 float shiftX = 0;
 float shiftY = 0;
 
-float strokeWidth = 0.0166667;
+float strokeWidth = 0.015;
 
 void setup() {
-  size(128, 128);
+  size(400, 400, P2D);
+  windowResizable(false);
   
   textAlign(LEFT, TOP);
   
@@ -23,28 +24,32 @@ void draw() {
   background(255);
   
   if(mousePressed) {
-    shiftX += (float)mouseX / width - 0.5;
-    shiftY += 0.5 - (float)mouseY / height;
+    shiftX += ((float)mouseX / width - 0.5) / zoom;
+    shiftY += (0.5 - (float)mouseY / height) / zoom;
   }
   
+  loadPixels();
+  
   for(int j = 0; j < height; j++) {
-    float y = (0.5 - (float)j / width) * 2 * zoom + shiftY;
+    float y = (0.5 - (float)j / width) * 2 / zoom + shiftY;
     
     for(int i = 0; i < width; i++) {
-      float x = ((float)i / width - 0.5) * 2 * zoom + shiftX;
+      float x = ((float)i / width - 0.5) * 2 / zoom + shiftX;
       
-      stroke(255);
+      color pixColor = color(255);
       
-      if(abs(x % 1) < strokeWidth * zoom || abs(y % 1) < strokeWidth * zoom) stroke(191);
-      if(abs(x % 10) < strokeWidth * zoom || abs(y % 10) < strokeWidth * zoom) stroke(127);
+      if(abs(x % 1) < strokeWidth / zoom || abs(y % 1) < strokeWidth / zoom) pixColor = color(191);
+      if(abs(x % 10) < strokeWidth / zoom || abs(y % 10) < strokeWidth / zoom) pixColor = color(127);
       
       for(Entry e : equations.entrySet()) {
-        if(abs(((Equation)e.getValue()).apply(x, y)) <= strokeWidth * zoom) stroke((int)e.getKey());
+        if(abs(((Equation)e.getValue()).apply(x, y)) <= strokeWidth / zoom) pixColor = color((int)e.getKey());
       }
       
-      point(i, j);
+      pixels[j * width + i] = pixColor;
     }
   }
+  
+  updatePixels();
   
   stroke(159);
   
@@ -54,4 +59,18 @@ void draw() {
   fill(159);
   
   text("X: " + nfc(shiftX, 2) + "\nY: " + nfc(shiftY, 2), width / 2 + 5, height / 2 + 5);
+  
+  text("FPS: " + nfc(frameRate, 2) + "\nZoom: " + zoom, 5, 5);
+}
+
+void keyPressed() {
+  switch(key) {
+    case '+':
+    zoom *= 5;
+    break;
+    
+    case '-':
+    zoom /= 5;
+    break;
+  }
 }
