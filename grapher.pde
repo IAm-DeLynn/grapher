@@ -7,26 +7,34 @@ float zoom = 0.2;
 float shiftX = 0;
 float shiftY = 0;
 
+int prevMouseX = 0;
+int prevMouseY = 0;
+
 float strokeWidth = 0.015;
 
 void setup() {
   size(400, 400, P2D);
-  windowResizable(false);
+  
+  prevMouseX = width / 2;
+  prevMouseY = height / 2;
   
   textAlign(LEFT, TOP);
   
   equations = new HashMap<>();
   
-  equations.put(color(255, 0, 0), (x, y) -> 2 * x - y); // y = 2 * x
+  equations.put(color(255, 0, 0), (x, y) -> x * x + y * y); // y = 2 * x
 }
 
 void draw() {
   background(255);
   
   if(mousePressed) {
-    shiftX += ((float)mouseX / width - 0.5) / zoom;
-    shiftY += (0.5 - (float)mouseY / height) / zoom;
+    shiftX += (float)(prevMouseX - mouseX) / width  / zoom;
+    shiftY += (float)(mouseY - prevMouseY) / height / zoom;
   }
+  
+  prevMouseX = mouseX;
+  prevMouseY = mouseY;
   
   loadPixels();
   
@@ -38,12 +46,10 @@ void draw() {
       
       color pixColor = color(255);
       
-      if(abs(x % 1) < strokeWidth / zoom || abs(y % 1) < strokeWidth / zoom) pixColor = color(191);
+      if(abs(x % 1)  < strokeWidth / zoom || abs(y % 1)  < strokeWidth / zoom) pixColor = color(191);
       if(abs(x % 10) < strokeWidth / zoom || abs(y % 10) < strokeWidth / zoom) pixColor = color(127);
       
-      for(Entry e : equations.entrySet()) {
-        if(abs(((Equation)e.getValue()).apply(x, y)) <= strokeWidth / zoom) pixColor = color((int)e.getKey());
-      }
+      for(Entry e : equations.entrySet()) if(abs(((Equation)e.getValue()).apply(x, y)) <= strokeWidth / zoom) pixColor = color((int)e.getKey());
       
       pixels[j * width + i] = pixColor;
     }
