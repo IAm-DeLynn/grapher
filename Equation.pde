@@ -1,5 +1,5 @@
 
 @FunctionalInterface
 interface Equation {
-  float apply(float l, float r);
+  float apply(float x, float y);
 }
