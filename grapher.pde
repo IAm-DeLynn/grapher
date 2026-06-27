@@ -6,12 +6,16 @@ float shiftY = 0;
 int prevMouseX = 0;
 int prevMouseY = 0;
 
+PFont font;
+
 float strokeWidth = 0.015;
 
 ArrayList<Plot> plots;
 
 void setup() {
   size(400, 400, P2D);
+  
+  font = createFont("Arial", 15);
   
   plots = new ArrayList<>();
   
@@ -21,6 +25,7 @@ void setup() {
   prevMouseY = height / 2;
   
   textAlign(LEFT, TOP);
+  textFont(font);
 }
 
 void draw() {
@@ -47,7 +52,7 @@ void draw() {
       if(abs(x % 1)  < strokeWidth / zoom || abs(y % 1)  < strokeWidth / zoom) pixColor = color(191);
       if(abs(x % 10) < strokeWidth / zoom || abs(y % 10) < strokeWidth / zoom) pixColor = color(127);
       
-      for(Plot pl : plots) if(pl.plot(x, y, strokeWidth / zoom)) pixColor = pl.plotColor;
+      for(Plot pl : plots) if(pl.plot(x, y, strokeWidth / zoom)) pixColor = lerpColor(pl.plotColor, pixColor, 1 - (float)alpha(pl.plotColor) / 255);
       
       pixels[j * width + i] = pixColor;
     }

@@ -7,13 +7,13 @@ class Plot {
   Plot(Equation _eq) {
     eq = _eq;
     rel = Relation.EQ;
-    plotColor = color(255, 0, 0);
+    plotColor = color(255, 0, 0, 191);
   }
   
   Plot(Equation _eq, Relation _rel) {
     eq = _eq;
     rel = _rel;
-    plotColor = color(255, 0, 0);
+    plotColor = color(255, 0, 0, 191);
   }
   
   Plot(Equation _eq, color _plotColor) {
