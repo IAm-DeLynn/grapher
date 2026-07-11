@@ -15,11 +15,11 @@ ArrayList<Plot> plots;
 void setup() {
   size(500, 500, P2D);
   
-  font = createFont("Arial", 15);
+  font = createFont("Arial", 12);
   
   plots = new ArrayList<>();
   
-  plots.add(new Plot((x, y) -> 2 * x + 5 - y)); // y = 2 * x + 5
+  plots.add(new Plot(new Equation(new DivExpr(new ConstExpr(1), new XVarExpr())))); // y = 1 / x
   
   prevMouseX = width  / 2;
   prevMouseY = height / 2;
