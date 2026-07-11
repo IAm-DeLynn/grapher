@@ -75,17 +75,18 @@ void draw() {
 void keyPressed() {
   switch(key) {
     case '+':
-    zoom *= 5;
+    zoom *= 2;
     break;
     
     case '-':
-    zoom /= 5;
+    zoom /= 2;
     break;
   }
 }
 
 void mouseWheel(MouseEvent e) {
-  float factor = e.getCount();
+  int count = e.getCount();
   
-  zoom *= exp(-factor);
+  if(count < 0) zoom *= 2;
+  if(count > 0) zoom /= 2;
 }
