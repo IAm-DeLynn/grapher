@@ -13,13 +13,13 @@ float strokeWidth = 0.015;
 ArrayList<Plot> plots;
 
 void setup() {
-  size(400, 400, P2D);
+  size(500, 500, P2D);
   
   font = createFont("Arial", 15);
   
   plots = new ArrayList<>();
   
-  plots.add(new Plot((x, y) -> x * x - y)); // y = x * x
+  plots.add(new Plot((x, y) -> 2 * x + 5 - y)); // y = 2 * x + 5
   
   prevMouseX = width  / 2;
   prevMouseY = height / 2;
@@ -42,7 +42,7 @@ void draw() {
   loadPixels();
   
   for(int j = 0; j < height; j++) {
-    float y = (0.5 - (float)j / width)   * 2 / zoom + shiftY;
+    float y = (0.5 - (float)j / height)  * 2 / zoom + shiftY;
     
     for(int i = 0; i < width; i++) {
       float x = ((float)i / width - 0.5) * 2 / zoom + shiftX;
@@ -82,4 +82,10 @@ void keyPressed() {
     zoom /= 5;
     break;
   }
+}
+
+void mouseWheel(MouseEvent e) {
+  float factor = e.getCount();
+  
+  zoom *= exp(-factor);
 }
