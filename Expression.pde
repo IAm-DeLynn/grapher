@@ -3,6 +3,38 @@ interface Expr {
   float apply(float x, float y);
 }
 
+
+
+class ConstExpr implements Expr {
+  float value;
+  
+  ConstExpr(float _value) {
+    value = _value;
+  }
+  
+  float apply(float x, float y) {
+    return value;
+  }
+}
+
+class XVarExpr implements Expr {
+  XVarExpr() {}
+  
+  float apply(float x, float y) {
+    return x;
+  }
+}
+
+class YVarExpr implements Expr {
+  YVarExpr() {}
+  
+  float apply(float x, float y) {
+    return y;
+  }
+}
+
+
+
 class AddExpr implements Expr {
   Expr expr1, expr2;
   
@@ -92,30 +124,86 @@ class LnExpr implements Expr {
   }
 }
 
-class ConstExpr implements Expr {
-  float value;
+class SinExpr implements Expr {
+  Expr expr;
   
-  ConstExpr(float _value) {
-    value = _value;
+  SinExpr(Expr _expr) {
+    expr = _expr;
   }
   
   float apply(float x, float y) {
-    return value;
-  }
-}
-
-class XVarExpr implements Expr {
-  XVarExpr() {}
-  
-  float apply(float x, float y) {
-    return x;
+    return sin(expr.apply(x, y));
   }
 }
 
-class YVarExpr implements Expr {
-  YVarExpr() {}
+class CosExpr implements Expr {
+  Expr expr;
+  
+  CosExpr(Expr _expr) {
+    expr = _expr;
+  }
   
   float apply(float x, float y) {
-    return y;
+    return cos(expr.apply(x, y));
+  }
+}
+
+class TanExpr implements Expr {
+  Expr expr;
+  
+  TanExpr(Expr _expr) {
+    expr = _expr;
+  }
+  
+  float apply(float x, float y) {
+    return tan(expr.apply(x, y));
+  }
+}
+
+class CotExpr implements Expr {
+  Expr expr;
+  
+  CotExpr(Expr _expr) {
+    expr = _expr;
+  }
+  
+  float apply(float x, float y) {
+    return 1.0 / tan(expr.apply(x, y));
+  }
+}
+
+class AsinExpr implements Expr {
+  Expr expr;
+  
+  AsinExpr(Expr _expr) {
+    expr = _expr;
+  }
+  
+  float apply(float x, float y) {
+    return asin(expr.apply(x, y));
+  }
+}
+
+class AcosExpr implements Expr {
+  Expr expr;
+  
+  AcosExpr(Expr _expr) {
+    expr = _expr;
+  }
+  
+  float apply(float x, float y) {
+    return acos(expr.apply(x, y));
+  }
+}
+
+class AtanExpr implements Expr {
+  Expr expr;
+  
+  AtanExpr(Expr _expr) {
+    expr = _expr;
+  }
+  
+  float apply(float x, float y) {
+    return atan(expr.apply(x, y));
   }
 }

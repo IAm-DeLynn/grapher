@@ -19,7 +19,7 @@ void setup() {
   
   plots = new ArrayList<>();
   
-  plots.add(new Plot(new Equation(new DivExpr(new ConstExpr(1), new XVarExpr())))); // y = 1 / x
+  plots.add(new Plot(new Equation(new SinExpr(new XVarExpr())))); // y = sin x
   
   prevMouseX = width  / 2;
   prevMouseY = height / 2;
